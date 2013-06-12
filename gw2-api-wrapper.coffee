@@ -1,5 +1,4 @@
-worldNames=mapNames=eventNames=objectiveNames=items=recipes=[]
-wvwMatches=null
+worldNames=mapNames=eventNames=objectiveNames=items=recipes=colors=wvwMatches=gameBuild=null
 
 #worldID has a default so that 70,000+ events don't get fetched accidently. Set to 0 when calling if you really want to
 #If you want to get events from every world on a single map: getEvents(0,1234)
@@ -25,7 +24,7 @@ checkValidLanguage= (language)->
 #Gets the names of all worlds and caches the results
 getWorldNames=(language="en")->
   if checkValidLanguage(language)
-    if !worldNames.length
+    if !worldNames
       $.ajax({
         url:"https://api.guildwars2.com/v1/world_names.json"
         type:"get"
@@ -51,7 +50,7 @@ getWorldName=(worldID, language="en")->
 #Gets the names of all maps and caches the results
 getMapNames=(language="en")->
   if checkValidLanguage(language)
-    if !mapNames.length
+    if !mapNames
       $.ajax({
         url:"https://api.guildwars2.com/v1/map_names.json"
         type:"get"
@@ -77,7 +76,7 @@ getMapName=(mapID, language="en")->
 #Gets the names of all events and caches the results
 getEventNames=(language="en")->
   if checkValidLanguage(language)
-    if !eventNames.length
+    if !eventNames
       $.ajax({
          url:"https://api.guildwars2.com/v1/event_names.json"
          type:"get"
@@ -114,7 +113,7 @@ getWvwMatches= ->
 #Gets the names of all WvW objectives and caches the results
 getObjectiveNames=(language="en")->
   if checkValidLanguage(language)
-    if !objectiveNames.length
+    if !objectiveNames
       $.ajax({
         url:"https://api.guildwars2.com/v1/wvw/objective_names.json"
         type:"get"
@@ -153,7 +152,7 @@ getMatchDetails=(matchID)->
 
 #Gets an array of all item IDs
 getItems=->
-  if !items.length
+  if !items
     $.ajax({
       url:"https://api.guildwars2.com/v1/items.json"
       type:"get"
@@ -180,7 +179,7 @@ getItemDetails=(itemID, language="en")->
 
 #Gets an array of all recipe IDs
 getRecipes=->
-  if !recipes.length
+  if !recipes
     $.ajax({
       url:"https://api.guildwars2.com/v1/recipes.json"
       type:"get"
@@ -194,13 +193,126 @@ getRecipes=->
 getRecipeDetails=(recipeID)->
   data=null
   $.ajax({
-  url:"https://api.guildwars2.com/v1/recipe_details.json"
-  type:"get"
-  dataType:"json"
-  async:false
-  data:
-   recipe_id:recipeID
+    url:"https://api.guildwars2.com/v1/recipe_details.json"
+    type:"get"
+    dataType:"json"
+    async:false
+    data:
+     recipe_id:recipeID
   }).done (d)->
     data=d
   data
 
+#Gets the game's current build ID
+getBuildID=->
+  if !gameBuild
+    data=null
+    $.ajax({
+      url:"https://api.guildwars2.com/v1/build.json"
+      type:"get"
+      dataType:"json"
+      async:false
+    }).done (d)->
+      data=d
+    return data.build_id
+
+#Gets guild details
+getGuildDetails=(name=null, ID=null)->
+  data=null
+  requestData=null
+  if !name
+    requestData={
+      guild_id:ID
+    }
+  if !ID
+    requestData={
+      guild_name:name
+    }
+  $.ajax({
+    url:"https://api.guildwars2.com/v1/guild_details.json"
+    type:"get"
+    dataType:"json"
+    async:false
+    data:
+      requestData
+  }).done (d)->
+    data=d
+  return data
+
+#Gets all dye colors currently available in the game
+getColors=(language="en")->
+  if checkValidLanguage(language)
+    if !colors
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/colors.json"
+        type:"get"
+        dataType:"json"
+        async:false
+        data:
+          lang:language
+      }).done (d)->
+        colors=d.colors;
+      return colors
+    return colors
+  false
+
+#Gets the correct color of a dye color when on a certain material
+getColorOnMaterial=(colorID, material, language="en")->
+  if ["cloth","leather","metal"].indexOf(material)>-1
+    if checkValidLanguage(language)
+      color=getColors(language)[colorID]
+
+      brightness=color[material].brightness/128
+      contrast=color[material].contrast
+      hue=(color[material].hue*3.14159265358979323846)/180
+      saturation=color[material].saturation
+      lightness=color[material].lightness
+
+      matrix=Matrix.I(4)
+
+      if brightness!=0 || contrast!=1
+        t=128*(2*brightness+1-contrast)
+        mult=$M([
+          [contrast,0,0,t]
+          [0,contrast,0,t]
+          [0,0,contrast,t]
+          [0,0,0,1]
+        ])
+        matrix=mult.x(matrix)
+
+      if hue!=0 || saturation!=1 || lightness!=1
+        multRgbToHsl=$M([
+          [ 0.707107, 0.0,      -0.707107, 0]
+          [-0.408248, 0.816497, -0.408248, 0]
+          [ 0.577350, 0.577350,  0.577350, 0]
+          [ 0,        0,         0,        1]
+        ])
+        matrix=multRgbToHsl.x(matrix)
+
+        cosHue=Math.cos(hue)
+        sinHue=Math.sin(hue)
+        mult=$M([
+          [cosHue * saturation,  sinHue * saturation, 0,         0]
+          [-sinHue * saturation, cosHue * saturation, 0,         0]
+          [0,                    0,                   lightness, 0]
+          [0,                    0,                   0,         1]
+        ])
+        matrix=mult.x(matrix)
+
+        multHslToRgb=$M([
+          [ 0.707107, -0.408248, 0.577350, 0]
+          [        0,  0.816497, 0.577350, 0]
+          [-0.707107, -0.408248, 0.577350, 0]
+          [ 0,        0,         0,        1]
+        ])
+        matrix=multHslToRgb.x(matrix)
+      bgrVector=$V([color.base_rgb[2],color.base_rgb[1],color.base_rgb[0],1])
+      bgrVector=matrix.x(bgrVector)
+      resultRgb=[bgrVector.elements[2],bgrVector.elements[1],bgrVector.elements[0]]
+
+      resultRgb[0]=Math.floor(Math.max(0,Math.min(255,resultRgb[0])))
+      resultRgb[1]=Math.floor(Math.max(0,Math.min(255,resultRgb[1])))
+      resultRgb[2]=Math.floor(Math.max(0,Math.min(255,resultRgb[2])))
+
+      return resultRgb
+  false

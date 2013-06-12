@@ -5,11 +5,12 @@ This library of functions is a JS wrapper for the Guild Wars 2 public API. It wr
 
 Requirements
 ------------------
-jQuery 1.8.0+ (2.0.0 with AJAX only included)
+* **jQuery 1.8.0+** (Example using jQuery 2.0.2 hosted on Google's servers)
+* **sylvester.js** Used for *getColorOnMaterial()*
 
 Installation
 ------------------
-Include the following wherever you are loading your libraries, make sure it is loaded after jQuery
+Include the following wherever you are loading your libraries, make sure it is loaded after the required libraries
 `<script src="gw2-api-wrapper.js"></script>`
 
 Function Reference
@@ -38,3 +39,8 @@ Function Reference
 **getItemDetails(itemID [,language])** - Gets a single item's details  
 **getRecipes()** - Gets a list of all recipe IDs  
 **getRecipeDetails(recipeID)** - Gets a single recipe's details
+
+###Miscellaneous APIs
+**getBuildID()** - Gets the current build ID
+**getColors([language])** - Gets all currently available dye colors
+**getColorOnMaterial(colorID, material [,language])** - Gets a dye color as if it were on a certain material. Materials can be "cloth", "leather", or "metal"

@@ -1,15 +1,27 @@
 <html>
 <head>
     <title></title>
-    <script src="jquery-2.0.0.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="sylvester.js"></script>
     <script src="gw2-api-wrapper.js"></script>
-    <script>
-$(function(){
-    console.log(getWvwMatches());
-});
-    </script>
+
 </head>
 <body>
+    <div id="d1" style="width:200px;height:200px"></div>
+    <div id="d2" style="width:200px;height:200px"></div>
+    <div id="d3" style="width:200px;height:200px"></div>
+    <script>
+        $(function(){
+            $('#d1').css('background-color','rgb('+getColorOnMaterial(443,'cloth')+')');
+            $('#d2').css('background-color','rgb('+getColorOnMaterial(443,'leather')+')');
+            $('#d3').css('background-color','rgb('+getColorOnMaterial(443,'metal')+')');
 
+            getItems();
+            getItems();
+            getItems();
+            getItems();
+            getItems();
+        });
+    </script>
 </body>
 </html>
