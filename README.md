@@ -41,6 +41,6 @@ Function Reference
 **getRecipeDetails(recipeID)** - Gets a single recipe's details
 
 ###Miscellaneous APIs
-**getBuildID()** - Gets the current build ID
-**getColors([language])** - Gets all currently available dye colors
+**getBuildID()** - Gets the current build ID  
+**getColors([language])** - Gets all currently available dye colors  
 **getColorOnMaterial(colorID, material [,language])** - Gets a dye color as if it were on a certain material. Materials can be "cloth", "leather", or "metal"
