@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Gw2-js-api-wrapper : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Gw2-js-api-wrapper</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/JasonKaz/gw2-js-api-wrapper">View on GitHub</a>
+
+          <h1 id="project_title">Gw2-js-api-wrapper</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/JasonKaz/gw2-js-api-wrapper/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/JasonKaz/gw2-js-api-wrapper/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="what-is-this" class="anchor" href="#what-is-this"><span class="octicon octicon-link"></span></a>What is this?</h2>
+
+<p>This library of functions is a JS wrapper for the Guild Wars 2 public API. It wraps the current APIs available with functions and provides some utility functions.</p>
+
+<h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>
+<strong>jQuery 1.8.0+</strong> (Example using jQuery 2.0.2 hosted on Google's servers)</li>
+<li>
+<strong>sylvester.js</strong> Used for <em>getColorOnMaterial()</em>
+</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Include the following wherever you are loading your libraries, make sure it is loaded after the required libraries
+<code>&lt;script src="gw2-api-wrapper.js"&gt;&lt;/script&gt;</code></p>
+
+<h2>
+<a name="function-reference" class="anchor" href="#function-reference"><span class="octicon octicon-link"></span></a>Function Reference</h2>
+
+<h3>
+<a name="general" class="anchor" href="#general"><span class="octicon octicon-link"></span></a>General</h3>
+
+<p><strong>checkValidLanguages(language)</strong> - Checks if the given language is available with the API</p>
+
+<h3>
+<a name="dynamic-event-api" class="anchor" href="#dynamic-event-api"><span class="octicon octicon-link"></span></a>Dynamic Event API</h3>
+
+<p><strong>getEvents(worldID, mapID, eventID)</strong> - Gets all events, filtered by the given arguments<br><strong>getWorldNames([language])</strong> - Gets all world names and caches them<br><strong>getWorldName(worldID [,language])</strong> - Gets a single world's name<br><strong>getMapNames([language])</strong> - Gets all map names and caches them<br><strong>getMapName(mapID [,language])</strong> - Gets a single map's name<br><strong>getEvents([language])</strong> - Gets all event names and caches them<br><strong>getEvent(eventID [,language])</strong> - Gets a single event's name  </p>
+
+<h3>
+<a name="wvw-api" class="anchor" href="#wvw-api"><span class="octicon octicon-link"></span></a>WvW API</h3>
+
+<p><strong>getWvwMatches()</strong> - Gets all currently running WvW matches<br><strong>getObjectiveNames([language])</strong> - Gets all WvW objectives and caches them<br><strong>getObjectiveName(objectiveID [,language])</strong> - Gets a single objective's name<br><strong>getMatchDetails(matchID)</strong> - Get the details of a single match  </p>
+
+<h3>
+<a name="item-and-recipe-api" class="anchor" href="#item-and-recipe-api"><span class="octicon octicon-link"></span></a>Item and Recipe API</h3>
+
+<p><strong>getItems()</strong> - Gets a list of all item IDs<br><strong>getItemDetails(itemID [,language])</strong> - Gets a single item's details<br><strong>getRecipes()</strong> - Gets a list of all recipe IDs<br><strong>getRecipeDetails(recipeID)</strong> - Gets a single recipe's details</p>
+
+<h3>
+<a name="miscellaneous-apis" class="anchor" href="#miscellaneous-apis"><span class="octicon octicon-link"></span></a>Miscellaneous APIs</h3>
+
+<p><strong>getBuildID()</strong> - Gets the current build ID<br><strong>getColors([language])</strong> - Gets all currently available dye colors<br><strong>getColorOnMaterial(colorID, material [,language])</strong> - Gets a dye color as if it were on a certain material. Materials can be "cloth", "leather", or "metal"</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Gw2-js-api-wrapper maintained by <a href="https://github.com/JasonKaz">JasonKaz</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
