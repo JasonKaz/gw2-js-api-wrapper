@@ -1,23 +1,25 @@
 class window.GW2API
   constructor:->
-    @worldNames=@mapNames=@eventNames=@objectiveNames=@items=@recipes=@colors=@wvwMatches=@gameBuild=null
+    @events=@worldNames=@mapNames=@eventNames=@objectiveNames=@items=@recipes=@colors=@wvwMatches=@gameBuild=@continents=@maps=@assets=null
+    @mapFloors=@mapDetails={}
 
   #worldID has a default so that 70,000+ events don't get fetched accidently. Set to 0 when calling if you really want to
   #If you want to get events from every world on a single map: getEvents(0,1234)
   getEvents:(worldID=1001, mapID=0, eventID=0)->
-    data={}
-    $.ajax({
-      url:"https://api.guildwars2.com/v1/events.json"
-      type:"get"
-      dataType:"json"
-      async:false
-      data:
-        world_id:worldID
-        map_id:mapID
-        event_id:eventID
-    }).done (d) ->
-      data=d
-    data
+    if !@events
+      me=@
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/events.json"
+        type:"get"
+        dataType:"json"
+        async:false
+        data:
+          world_id:worldID
+          map_id:mapID
+          event_id:eventID
+      }).done (d) ->
+        me.events=d.events
+    return @events
 
   #Checks if a given language is available in the API
   checkValidLanguage:(language)->
@@ -326,13 +328,109 @@ class window.GW2API
         return resultRgb
     false
 
+  #Assembles a valid URL for the render service
+  getAssetURL:(signature, id, format="png")->
+    if ["png","jpg"].indexOf(format)>-1
+      return "https://render.guildwars2.com/file/#{signature}/#{id}.#{format}"
+    false
 
+  #Gets all file assets through the files API
+  getAssets:->
+    if !@assets
+      me=@
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/files.json"
+        type:"get"
+        dataType:"json"
+        async:false
+      }).done (d)->
+        me.assets=d;
+    @assets
 
+  #Gets a single assets details through the files API
+  getAsset:(assetName)->
+    @getAssets()[assetName]
 
+  #Gets an array containing each continent and it's details
+  getContinents:->
+    if !@continents
+      me=@
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/continents.json"
+        type:"get"
+        dataType:"json"
+        async:false
+      }).done (d)->
+        me.continents=d.continents;
+    @continents
 
+  getMaps:(language="en")->
+    if @checkValidLanguage(language)
+      if !@maps
+        me=@
+        $.ajax({
+          url:"https://api.guildwars2.com/v1/maps.json"
+          type:"get"
+          dataType:"json"
+          async:false
+          data:
+            lang:language
+        }).done (d)->
+          me.maps=d.maps;
+      return @maps
+    false
 
+  #Gets map details
+  getMap:(mapID, language="en")->
+    if @checkValidLanguage(language)
+      if mapID
+        return @getMaps(language)[mapID]
+    false
 
+  #Gets all details about a map, it's POIs, tasks, skill challenges, and sectors
+  getMapFloor:(continentID, floorID, language="en")->
+    if @checkValidLanguage(language)
+      if continentID && floorID
+        id=continentID+","+floorID
+        if !@mapFloors || !@mapFloors[id]
+          me=@
+          $.ajax({
+            url:"https://api.guildwars2.com/v1/map_floor.json"
+            type:"get"
+            dataType:"json"
+            async:false
+            data:
+              continent_id:continentID
+              floor:floorID
+              lang:language
+          }).done (d)->
+            me.mapFloors[id]=d
+        return @mapFloors[id]
+    false
 
+  #Gets a valid tile URL
+  getTileURL:(continentID, floorID, z, x, y)->
+    return "https://tiles.guildwars2.com/#{continentID}/#{floorID}/#{z}/#{x}/#{y}.jpg"
 
+  #Gets all event details
+  getAllEventDetails:(language="en")->
+    if @checkValidLanguage(language)
+      if !@eventDetails
+        me=@
+        $.ajax({
+          url:"https://api.guildwars2.com/v1/event_details.json"
+          type:"get"
+          dataType:"json"
+          async:false
+          data:
+            lang:language
+        }).done (d)->
+          me.eventDetails=d.events
+      return @eventDetails
+    false
 
-
+  #Get a single event's details
+  getEventDetails:(eventID, language="en")->
+    if @checkValidLanguage(language)
+      return @getAllEventDetails(language)[eventID]
+    false

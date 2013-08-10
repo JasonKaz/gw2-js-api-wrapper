@@ -7,16 +7,12 @@
 
 </head>
 <body>
-    <div id="d1" style="width:200px;height:200px"></div>
-    <div id="d2" style="width:200px;height:200px"></div>
-    <div id="d3" style="width:200px;height:200px"></div>
+    <img id="tile" />
     <script>
         $(function(){
             var GW2=new GW2API;
 
-            $('#d1').css('background-color','rgb('+GW2.getColorOnMaterial(9,'cloth')+')');
-            $('#d2').css('background-color','rgb('+GW2.getColorOnMaterial(9,'leather')+')');
-            $('#d3').css('background-color','rgb('+GW2.getColorOnMaterial(9,'metal')+')');
+            $("#tile").attr("src", GW2.getTileURL(1,1,1,1,1));
         });
     </script>
 </body>
