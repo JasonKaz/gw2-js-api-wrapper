@@ -1,6 +1,5 @@
 What is this?
 ------------------
-
 This library of functions is a JS wrapper for the Guild Wars 2 public API. It wraps the current APIs available with functions and provides some utility functions.
 
 Requirements
@@ -15,7 +14,6 @@ Include the following wherever you are loading your libraries, make sure it is l
 
 Function Reference
 ------------------
-
 ###General
 **checkValidLanguages(language)** - Checks if the given language is available with the API
 
