@@ -21,9 +21,9 @@ Function Reference
 **getEvents(worldID, mapID, eventID)** - Gets all events, filtered by the given arguments  
 **getEventNames([language])** - Gets all event names  
 **getEventName(eventID [,language])** - Gets a single event's name  
-**getWorldNames([language])** - Gets all world names  
+**getWorldNames([language])** - Gets all world names and IDs  
 **getWorldName(worldID [,language])** - Gets a single world's name  
-**getMapNames([language])** - Gets all map names  
+**getMapNames([language])** - Gets all map names and IDs  
 **getMapName(mapID [,language])** - Gets a single map's name  
 **getAllEventDetails([language])** - Gets all event details  
 **getEventDetails(eventID [,language])** - Get a single event's details  

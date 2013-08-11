@@ -1,0 +1,109 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        div{
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Server:
+        <select id="server" autocomplete="off"></select>
+        You selected <strong id="selected_server">nothing</strong></span>
+    </div>
+    <div>
+        Map:
+        <select id="map" autocomplete="off" disabled></select>
+        You selected <strong id="selected_map">nothing</strong></span>
+    </div>
+    <div>
+        Event:
+        <select id="event" autocomplete="off" disabled></select>
+        You selected <strong id="selected_event">nothing</strong></span>
+    </div>
+    <div>
+        Event status: <strong id="event_status">N/A</strong>
+    </div>
+    <div>
+        Event details: <pre id="event_details"></pre>
+    </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../src/gw2-api-wrapper.js"></script>
+<script>
+    $(function(){
+        var GW2=new GW2API,
+            $server=$("#server"),
+            $selectedServer=$("#selected_server"),
+            $map=$("#map"),
+            $selectedMap=$("#selected_map"),
+            $event=$("#event"),
+            $selectedEvent=$("#selected_event"),
+            $eventStatus=$("#event_status"),
+            $eventDetails=$("#event_details");
+
+        //Just a function to more easily build dropdowns for the example
+        function buildOptions(list, index, value){
+            var ref=null,
+                html='<option value="" selected>-Select an Option-</option>';
+
+            for (var i in list){
+                ref=list[i];
+                html+='<option value="'+ref[index]+'">'+ref[value]+'</option>';
+            }
+
+            return html;
+        }
+
+        function loadWorlds(){
+            //Get all server names
+            var worlds=GW2.getWorldNames();
+
+            $server.html(buildOptions(worlds, "id", "name"));
+        }
+
+        $server.on("change", function(){
+            if ($(this).val()){
+                //Get a single server's name
+                $selectedServer.text(GW2.getWorldName($(this).val()));
+
+                //Get all map names
+                var maps=GW2.getMapNames();
+
+                $map.html(buildOptions(maps, "id", "name")).prop("disabled", false);
+            }
+        });
+
+        $map.on("change", function(){
+            if ($(this).val()){
+                //Get a single map's name
+                $selectedMap.text(GW2.getMapName($(this).val()));
+
+                //Get all events on the selected server and map
+                var events=GW2.getEvents($server.val(), $(this).val());
+
+                $event.html(buildOptions(events, "event_id", "event_id")).prop("disabled", false);
+            }
+        });
+
+        $event.on("change", function(){
+            if ($(this).val()){
+                //Get a single event's name
+                $selectedEvent.text(GW2.getEventName($(this).val()));
+
+                //Get the status and details of the selected event in the selected server and map
+                var status=GW2.getEvents($server.val(), $map.val(), $(this).val())[0].state,
+                    details=GW2.getEventDetails($(this).val());
+
+                $eventStatus.text(status);
+                $eventDetails.text(JSON.stringify(details, undefined, 2));
+            }
+        });
+
+        loadWorlds();
+    });
+</script>
+</body>
+</html>

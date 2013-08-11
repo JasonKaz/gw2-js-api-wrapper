@@ -2,12 +2,12 @@
 (function() {
   window.GW2API = (function() {
     function GW2API() {
-      this.events = this.worldNames = this.mapNames = this.eventNames = this.objectiveNames = this.items = this.recipes = this.colors = this.wvwMatches = this.gameBuild = this.continents = this.maps = this.assets = null;
+      this.worldNames = this.mapNames = this.eventNames = this.objectiveNames = this.items = this.recipes = this.colors = this.wvwMatches = this.gameBuild = this.continents = this.maps = this.assets = null;
       this.mapFloors = this.mapDetails = {};
     }
 
     GW2API.prototype.getEvents = function(worldID, mapID, eventID) {
-      var me;
+      var data;
       if (worldID == null) {
         worldID = 1001;
       }
@@ -17,23 +17,21 @@
       if (eventID == null) {
         eventID = 0;
       }
-      if (!this.events) {
-        me = this;
-        $.ajax({
-          url: "https://api.guildwars2.com/v1/events.json",
-          type: "get",
-          dataType: "json",
-          async: false,
-          data: {
-            world_id: worldID,
-            map_id: mapID,
-            event_id: eventID
-          }
-        }).done(function(d) {
-          return me.events = d.events;
-        });
-      }
-      return this.events;
+      data = null;
+      $.ajax({
+        url: "https://api.guildwars2.com/v1/events.json",
+        type: "get",
+        dataType: "json",
+        async: false,
+        data: {
+          world_id: worldID,
+          map_id: mapID,
+          event_id: eventID
+        }
+      }).done(function(d) {
+        return data = d.events;
+      });
+      return data;
     };
 
     GW2API.prototype.checkValidLanguage = function(language) {

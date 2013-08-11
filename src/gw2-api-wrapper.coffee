@@ -1,25 +1,24 @@
 class window.GW2API
   constructor:->
-    @events=@worldNames=@mapNames=@eventNames=@objectiveNames=@items=@recipes=@colors=@wvwMatches=@gameBuild=@continents=@maps=@assets=null
+    @worldNames=@mapNames=@eventNames=@objectiveNames=@items=@recipes=@colors=@wvwMatches=@gameBuild=@continents=@maps=@assets=null
     @mapFloors=@mapDetails={}
 
   #worldID has a default so that 70,000+ events don't get fetched accidently. Set to 0 when calling if you really want to
   #If you want to get events from every world on a single map: getEvents(0,1234)
   getEvents:(worldID=1001, mapID=0, eventID=0)->
-    if !@events
-      me=@
-      $.ajax({
-        url:"https://api.guildwars2.com/v1/events.json"
-        type:"get"
-        dataType:"json"
-        async:false
-        data:
-          world_id:worldID
-          map_id:mapID
-          event_id:eventID
-      }).done (d) ->
-        me.events=d.events
-    return @events
+    data=null
+    $.ajax({
+      url:"https://api.guildwars2.com/v1/events.json"
+      type:"get"
+      dataType:"json"
+      async:false
+      data:
+        world_id:worldID
+        map_id:mapID
+        event_id:eventID
+    }).done (d) ->
+      data=d.events
+    data
 
   #Checks if a given language is available in the API
   checkValidLanguage:(language)->
