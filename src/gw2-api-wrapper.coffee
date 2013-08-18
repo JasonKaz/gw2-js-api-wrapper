@@ -165,23 +165,25 @@ class window.GW2API
         dataType:"json"
         async:false
       }).done (d)->
-        me.items=d
+        me.items=d.items
     @items
 
   #Gets an object containing item details
   getItemDetails:(itemID, language="en")->
-    data=null
-    $.ajax({
-      url:"https://api.guildwars2.com/v1/item_details.json"
-      type:"get"
-      dataType:"json"
-      async:false
-      data:
-        item_id:itemID
-        lang:language
-      }).done (d)->
-        data=d
-    data
+    if @checkValidLanguage(language)
+      data=null
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/item_details.json"
+        type:"get"
+        dataType:"json"
+        async:false
+        data:
+          item_id:itemID
+          lang:language
+        }).done (d)->
+          data=d
+      return data
+    false
 
   #Gets an array of all recipe IDs
   getRecipes:->
@@ -193,22 +195,25 @@ class window.GW2API
         dataType:"json"
         async:false
       }).done (d)->
-        me.recipes=d
+        me.recipes=d.recipes
     @recipes
 
   #Gets an object containing recipe details
-  getRecipeDetails:(recipeID)->
-    data=null
-    $.ajax({
-      url:"https://api.guildwars2.com/v1/recipe_details.json"
-      type:"get"
-      dataType:"json"
-      async:false
-      data:
-        recipe_id:recipeID
-    }).done (d)->
-      data=d
-    data
+  getRecipeDetails:(recipeID, language="en")->
+    if @checkValidLanguage(language)
+      data=null
+      $.ajax({
+        url:"https://api.guildwars2.com/v1/recipe_details.json"
+        type:"get"
+        dataType:"json"
+        async:false
+        data:
+          recipe_id:recipeID
+          lang:language
+      }).done (d)->
+        data=d
+      return data
+    false
 
   #Gets the game's current build ID
   getBuildID:->

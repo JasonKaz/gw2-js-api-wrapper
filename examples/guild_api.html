@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        div{
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Guild ID:
+        <input type="text" id="guild_id" autocomplete="off" />
+    </div>
+    <div>
+        OR
+    </div>
+    <div>
+        Guild Name: <input type="text" id="guild_name" placeholder="SEED" autocomplete="off" /><br />
+        <input type="submit" id="submit" value="Get Details" />
+    </div>
+    <pre id="details"></pre>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../src/gw2-api-wrapper.js"></script>
+<script>
+    $(function(){
+        var GW2=new GW2API,
+            $submit=$("#submit"),
+            $guildID=$("#guild_id"),
+            $guildName=$("#guild_name"),
+            $details=$("#details");
+
+        $submit.on("click", function(){
+            var details;
+
+            if ($guildName.val()!=""){
+                details=GW2.getGuildDetails($guildName.val());
+            }else{
+                details=GW2.getGuildDetails(null, $guildID.val());
+            }
+
+            $details.text(JSON.stringify(details, undefined, 2));
+        });
+    });
+</script>
+</body>
+</html>

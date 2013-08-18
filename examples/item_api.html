@@ -1,0 +1,68 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        div{
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Item:
+        <select id="item" autocomplete="off"></select>
+    </div>
+    <pre id="item_details"></pre>
+    <div>
+        Recipe:
+        <select id="recipe" autocomplete="off"></select>
+    </div>
+    <pre id="recipe_details"></pre>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../src/gw2-api-wrapper.js"></script>
+<script>
+    $(function(){
+        var GW2=new GW2API,
+            $item=$("#item"),
+            $itemDetails=$("#item_details"),
+            $recipe=$("#recipe"),
+            $recipeDetails=$("#recipe_details");
+
+        //Initially populates the dropdowns
+        function loadData(){
+            var html='<option value="" selected>-Select an Option-</option>',
+                data=GW2.getItems();
+
+            for (var i in data){
+                html+='<option value="'+data[i]+'">'+data[i]+'</option>';
+            }
+
+            $item.html(html);
+
+            html='<option value="" selected>-Select an Option-</option>';
+            data=GW2.getRecipes();
+
+            for (var i in data){
+                html+='<option value="'+data[i]+'">'+data[i]+'</option>';
+            }
+
+            $recipe.html(html);
+        }
+
+        $item.on("change", function(){
+            var details=GW2.getItemDetails($item.val());
+            $itemDetails.text(JSON.stringify(details, undefined, 2));
+        });
+
+        $recipe.on("change", function(){
+            var details=GW2.getRecipeDetails($recipe.val());
+            $recipeDetails.text(JSON.stringify(details, undefined, 2));
+        });
+        +
+
+        loadData();
+    });
+</script>
+</body>
+</html>

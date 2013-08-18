@@ -4,7 +4,7 @@ This library of functions is a JS wrapper for the Guild Wars 2 public API. It wr
 
 Requirements
 ------------------
-* **jQuery 1.8.0+** (Example using jQuery 2.0.2 hosted on Google's servers)
+* **jQuery 1.8.0+** (Example using jQuery 1.10.2 hosted on Google's servers)
 * **sylvester.js** Used for *getColorOnMaterial()*
 
 Installation
