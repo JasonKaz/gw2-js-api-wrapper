@@ -65,7 +65,7 @@ class window.GW2API
         }).done (d) ->
           me.mapNames=d
       return @mapNames
-  false
+    false
 
   #Gets the name of a map given an ID
   getMapName:(mapID, language="en")->
@@ -91,7 +91,7 @@ class window.GW2API
         }).done (d) ->
           me.eventNames=d
       return @eventNames
-  false
+    false
 
   #Gets the name of an event given an ID
   getEventName:(eventID, language="en")->

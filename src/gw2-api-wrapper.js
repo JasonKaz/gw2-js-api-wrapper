@@ -102,9 +102,8 @@ window.GW2API = (function() {
       }
       return this.mapNames;
     }
+    return false;
   };
-
-  false;
 
   GW2API.prototype.getMapName = function(mapID, language) {
     var i, _i, _len, _ref;
@@ -146,9 +145,8 @@ window.GW2API = (function() {
       }
       return this.eventNames;
     }
+    return false;
   };
-
-  false;
 
   GW2API.prototype.getEventName = function(eventID, language) {
     var i, _i, _len, _ref;
