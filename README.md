@@ -42,7 +42,9 @@ Function Reference
 
 ###Map API
 **getContinents()** - Gets an array containing each continent and it's details  
-**getMap(map_id [,language])** - Gets a map's details  
+**getContinent(continentID)** - Gets all details about a continent  
+**getMaps([language])** - Gets all maps  
+**getMap(map_id [,language])** - Gets a map's size details  
 **getMapFloor(continentID, floorID [,language])** - Gets all details about a map, it's POIs, tasks, skill challenges, and sectors  
 
 ###Render Service

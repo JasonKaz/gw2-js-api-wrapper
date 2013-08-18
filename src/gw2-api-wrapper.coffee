@@ -368,6 +368,11 @@ class window.GW2API
         me.continents=d.continents;
     @continents
 
+  getContinent:(continentID)->
+    if continentID
+      return @getContinents()[continentID]
+    false
+
   getMaps:(language="en")->
     if @checkValidLanguage(language)
       if !@maps

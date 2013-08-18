@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        div{
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Continent: <select id="continent" autocomplete="off"></select>
+    </div>
+    <pre id="continent_details"></pre>
+    <div>
+        Map Floor: <select id="floor" autocomplete="off"></select>
+    </div>
+    <pre id="floor_details"></pre>
+    <div>
+        Map: <select id="map" autocomplete="off"></select>
+    </div>
+    <pre id="map_details"></pre>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../src/gw2-api-wrapper.js"></script>
+<script>
+    $(function(){
+        var GW2=new GW2API,
+            $continent=$("#continent"),
+            $continentDetails=$("#continent_details"),
+            $map=$("#map"),
+            $mapDetails=$("#map_details"),
+            $floor=$("#floor"),
+            $floorDetails=$("#floor_details");
+
+        function loadData(){
+            var data=GW2.getContinents(),
+                html='<option value="" selected>-Select an Option-</option>';
+
+            for (var i in data){
+                html+='<option value="'+i+'">'+data[i].name+'</option>';
+            }
+
+            $continent.html(html);
+
+            data=GW2.getMaps();
+            html='<option value="" selected>-Select an Option-</option>';
+
+            for (var i in data){
+                html+='<option value="'+i+'">'+data[i].map_name+'</option>';
+            }
+
+            $map.html(html);
+        }
+
+        loadData();
+
+        $continent.on("change", function(){
+            var data=GW2.getContinent($continent.val()),
+                html='<option value="" selected>-Select an Option-</option>';
+
+            $continentDetails.text(JSON.stringify(data, undefined, 2));
+
+            for (var i in data.floors){
+                html+='<option value="'+data.floors[i]+'">'+data.floors[i]+'</option>';
+            }
+
+            $floor.html(html);
+        });
+
+        $map.on("change", function(){
+            var data=GW2.getMap($map.val());
+
+            $mapDetails.text(JSON.stringify(data, undefined, 2));
+        });
+
+        $floor.on("change", function(){
+            var data=GW2.getMapFloor($continent.val(), $floor.val());
+
+            $floorDetails.text(JSON.stringify(data, undefined, 2));
+        });
+    });
+</script>
+</body>
+</html>

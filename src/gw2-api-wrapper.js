@@ -487,6 +487,13 @@ window.GW2API = (function() {
     return this.continents;
   };
 
+  GW2API.prototype.getContinent = function(continentID) {
+    if (continentID) {
+      return this.getContinents()[continentID];
+    }
+    return false;
+  };
+
   GW2API.prototype.getMaps = function(language) {
     var me;
     if (language == null) {
