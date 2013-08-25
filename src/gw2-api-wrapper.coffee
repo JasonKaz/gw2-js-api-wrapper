@@ -22,7 +22,11 @@ class window.GW2API
 
   #Checks if a given language is available in the API
   checkValidLanguage:(language)->
-    ["en","fr","de","es"].indexOf(language)>-1
+    @getValidLanguages().indexOf(language)>-1
+
+  #Gets all languages valid in the API
+  getValidLanguages:->
+    ["en","fr","de","es"]
 
   #Gets the names of all worlds and caches the results
   getWorldNames:(language="en")->
